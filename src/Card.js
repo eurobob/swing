@@ -320,14 +320,14 @@ const Card = (stack, targetElement, prepend) => {
       lastThrow.direction = direction || computeDirection(fromX, fromY, config.allowedDirections);
 
       if (where === Card.THROW_IN) {
-        springThrowIn.setCurrentValue(0).setAtRest().setEndValue(1);
+        springThrowIn.setCurrentValue(0).setAtRest().setVelocity(config.velocity).setEndValue(1);
 
         eventEmitter.trigger('throwin', {
           target: targetElement,
           throwDirection: lastThrow.direction
         });
       } else if (where === Card.THROW_OUT) {
-        springThrowOut.setCurrentValue(0).setAtRest().setVelocity(100).setEndValue(1);
+        springThrowOut.setCurrentValue(0).setAtRest().setVelocity(config.velocity).setEndValue(1);
 
         eventEmitter.trigger('throwout', {
           target: targetElement,
@@ -414,7 +414,8 @@ Card.makeConfig = (config = {}) => {
     rotation: Card.rotation,
     throwOutConfidence: Card.throwOutConfidence,
     throwOutDistance: Card.throwOutDistance,
-    transform: Card.transform
+    transform: Card.transform,
+    velocity: 0
   };
 
   return _.assign({}, defaultConfig, config);
