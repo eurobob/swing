@@ -44,7 +44,7 @@ const Card = (stack, targetElement, prepend) => {
   let currentY;
   let doMove;
   let eventEmitter;
-  let isDraging;
+  let isDragging;
   let isPanning;
   let lastThrow;
   let lastTranslate;
@@ -114,10 +114,10 @@ const Card = (stack, targetElement, prepend) => {
       currentX = 0;
       currentY = 0;
 
-      isDraging = true;
+      isDragging = true;
 
       (function animation () {
-        if (isDraging) {
+        if (isDragging) {
           doMove();
 
           raf(animation);
@@ -131,7 +131,7 @@ const Card = (stack, targetElement, prepend) => {
     });
 
     eventEmitter.on('panend', (event) => {
-      isDraging = false;
+      isDragging = false;
 
       const coordinateX = lastTranslate.coordinateX + event.deltaX;
       const coordinateY = lastTranslate.coordinateY + event.deltaY;
@@ -166,7 +166,7 @@ const Card = (stack, targetElement, prepend) => {
       });
 
       targetElement.addEventListener('touchend', () => {
-        if (isDraging && !isPanning) {
+        if (isDragging && !isPanning) {
           eventEmitter.trigger('dragend', {
             target: targetElement
           });
@@ -198,7 +198,7 @@ const Card = (stack, targetElement, prepend) => {
       });
 
       targetElement.addEventListener('mouseup', () => {
-        if (isDraging && !isPanning) {
+        if (isDragging && !isPanning) {
           eventEmitter.trigger('dragend', {
             target: targetElement
           });
@@ -228,10 +228,10 @@ const Card = (stack, targetElement, prepend) => {
       },
       onSpringUpdate: (spring) => {
         const value = spring.getCurrentValue();
-        const coordianteX = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromX, 0);
-        const coordianteY = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromY, 0);
+        const coordinateX = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromX, 0);
+        const coordinateY = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromY, 0);
 
-        onSpringUpdate(coordianteX, coordianteY);
+        onSpringUpdate(coordinateX, coordinateY);
       }
     });
 
@@ -244,21 +244,21 @@ const Card = (stack, targetElement, prepend) => {
       onSpringUpdate: (spring) => {
         const value = spring.getCurrentValue();
 
-        let coordianteX;
-        let coordianteY;
+        let coordinateX;
+        let coordinateY;
         let directionFactor;
 
         if (lastThrow.direction === Direction.RIGHT || lastThrow.direction === Direction.LEFT) {
           directionFactor = lastThrow.direction === Direction.RIGHT ? 1 : -1;
-          coordianteX = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromX, throwOutDistance * directionFactor);
-          coordianteY = lastThrow.fromY;
+          coordinateX = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromX, throwOutDistance * directionFactor);
+          coordinateY = lastThrow.fromY;
         } else if (lastThrow.direction === Direction.UP || lastThrow.direction === Direction.DOWN) {
           directionFactor = lastThrow.direction === Direction.DOWN ? 1 : -1;
-          coordianteX = lastThrow.fromX;
-          coordianteY = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromY, throwOutDistance * directionFactor);
+          coordinateX = lastThrow.fromX;
+          coordinateY = rebound.MathUtil.mapValueInRange(value, 0, 1, lastThrow.fromY, throwOutDistance * directionFactor);
         }
 
-        onSpringUpdate(coordianteX, coordianteY);
+        onSpringUpdate(coordinateX, coordinateY);
       }
     });
 
@@ -276,16 +276,16 @@ const Card = (stack, targetElement, prepend) => {
       lastY = currentY;
 
       const coordinateX = lastTranslate.coordinateX + currentX;
-      const coordianteY = lastTranslate.coordinateY + currentY;
-      const rotation = config.rotation(coordinateX, coordianteY, targetElement, config.maxRotation);
+      const coordinateY = lastTranslate.coordinateY + currentY;
+      const rotation = config.rotation(coordinateX, coordinateY, targetElement, config.maxRotation);
 
-      config.transform(targetElement, coordinateX, coordianteY, rotation);
+      config.transform(targetElement, coordinateX, coordinateY, rotation);
 
       eventEmitter.trigger('dragmove', {
         offset: coordinateX,
         target: targetElement,
-        throwDirection: computeDirection(coordinateX, coordianteY, config.allowedDirections),
-        throwOutConfidence: config.throwOutConfidence(coordinateX, coordianteY, targetElement)
+        throwDirection: computeDirection(coordinateX, coordinateY, config.allowedDirections),
+        throwOutConfidence: config.throwOutConfidence(coordinateX, coordinateY, targetElement)
       });
     };
 
