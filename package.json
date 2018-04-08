@@ -26,6 +26,7 @@
     "jsdom": "^6.3.0",
     "jsonfile": "^2.2.1",
     "mocha": "^3.1.2",
+    "npm-watch": "^0.3.0",
     "semantic-release": "^4.3.5",
     "sinon": "^1.16.1",
     "webpack": "^1.12.1"
@@ -46,7 +47,11 @@
     "build": "babel ./src --out-dir ./dist --copy-files",
     "lint": "eslint ./src ./test",
     "precommit": "npm run lint && npm run test",
-    "test": "mocha --compilers js:babel-register"
+    "test": "mocha --compilers js:babel-register",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "build": "src/**/*.js"
   },
   "version": "3.1.0"
 }
