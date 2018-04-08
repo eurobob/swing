@@ -46,7 +46,6 @@
   "scripts": {
     "build": "babel ./src --out-dir ./dist --copy-files",
     "lint": "eslint ./src ./test",
-    "precommit": "npm run lint && npm run test",
     "test": "mocha --compilers js:babel-register",
     "watch": "npm-watch"
   },
